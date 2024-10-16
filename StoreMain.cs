@@ -2,30 +2,39 @@
 {
     public static class Store
     {
-        public static void AddItem(Item item)
+        public static string AddItem(Item item)
         {
             Console.WriteLine($"How many {item.Name} would you like to purchase?");
             Int32.TryParse(Console.ReadLine(), out int AddItemAmount);
+            if (item.CheckDate && !checkDate())
+            {
+                return "invalid";
+            };
+            if (item.CheckAge && !checkAge())
+            {
+                return "invalid";
+            };
+            
             if (AddItemAmount >= 0)
             {
                 if (AddItemAmount <= item.Stock)
                 {
                     item.DecreaseStock(AddItemAmount);
                     item.AddToCart(AddItemAmount);
-                    Console.WriteLine($"{AddItemAmount} {item.Name}(s) added to your cart.");
+                    return $"{AddItemAmount} {item.Name}(s) added to your cart.";
                 }
                 else if(item.Stock == 0)
                 {
-                    Console.WriteLine($"Sorry, we are all out of {item.Name}");
+                    return $"Sorry, we are all out of {item.Name}";
                 }
                 else
                 {
-                    Console.WriteLine($"Sorry, we only have {item.Stock} {item.Name}s in stock.");
+                    return $"Sorry, we only have {item.Stock} {item.Name}s in stock.";
                 }
             }
             else
             {
-                throw new Exception("Number must be positive.");
+                return "Number must be positive.";
             }
         }
 
